@@ -9,7 +9,9 @@ const connection = mysql.createConnection({
 
 connection.connect();
 
-connection.query('create database test')
+connection.query('drop database test')
+
+connection.query('create database if not exists test')
 
 connection.query('use test')
 
@@ -33,23 +35,10 @@ connection.query(`create table if not exists comment(
     }
 )
 
-// connection.query(`insert into comment 
-//     (evaluate_content, evaluate_time, picture, picture_url, judge_ban, user_id, seller, order_id, commodity) 
-//     values (? ? ? ? ? ? ? ? ?)`
-//     , [content, time, picture, picture_url, judge_ban, user_id, seller, order_id, commodity]
-//     , (err, res) => {
-//         if (err) {
-//             console.log(err)
-//             return
-//         }
-//         console.log(res)
-//     }
-// )
-
 // 创建 user 数据表
 connection.query(`create table if not exists user(
     id int unsigned auto_increment,
-    openid int unsigned,
+    openid char(100) not null,
     name varchar(100) not null,
     nickname varchar(100) not null,
     sex char(2) not null,
@@ -58,7 +47,7 @@ connection.query(`create table if not exists user(
     phone int unsigned,
     user_buy int unsigned,
     judge_lock char(2) not null,
-    headimgurl varchar(100) not null,
+    headimgurl varchar(3000) not null,
     province varchar(100) not null,
     city varchar(100) not null,
     country varchar(100) not null,
@@ -155,6 +144,7 @@ connection.query(`create table if not exists administrator(
 
 // 创建 lunbo 数据表
 connection.query(`create table if not exists lunbo(
+    id int unsigned auto_increment,
     commodity_id int unsigned,
     imgurl varchar(100) not null,
     url varchar(100) not null
@@ -205,7 +195,7 @@ connection.query(`create table if not exists address_city(
 connection.query(`create table if not exists address_menu(
     my_id int unsigned not null,
     father_id int unsigned not null,
-    city_name varchar(100) not null,
+    city_name varchar(100) not null
     )`
     , (err, res) => {
         if (err) console.log(err)
@@ -243,6 +233,7 @@ connection.query(`create table if not exists shopping(
         console.log(res)
     }
 )
+
 
 
 connection.end();
