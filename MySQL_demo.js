@@ -39,7 +39,7 @@ connection.query(`create table if not exists comment(
 connection.query(`create table if not exists user(
     id int unsigned auto_increment,
     openid char(100) not null,
-    name varchar(100) not null,
+    name varchar(100) not null default '张三',
     nickname varchar(100) not null,
     sex char(2) not null,
     wx_number int unsigned,
@@ -148,7 +148,8 @@ connection.query(`create table if not exists lunbo(
     id int unsigned auto_increment,
     commodity_id int unsigned,
     imgurl varchar(100) not null,
-    url varchar(100) not null
+    url varchar(100) not null,
+    PRIMARY KEY (id)
     )`
     , (err, res) => {
         if (err) console.log(err)
