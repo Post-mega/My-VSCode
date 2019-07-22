@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+
+</body>
+<script>
+    Function.prototype.myCall = function (context) {
+        var context = context || window
+        // 给 context 添加一个属性
+        // getValue.call(a, 'yck', '24') => a.fn = getValue
+        context.fn = this
+        // 将 context 后面的参数提取出来
+        var args = [...arguments].slice(1)
+        var result = context.fn(...args)
+        // 删除 fn
+        delete context.fn
+        return result
+    }
+
+
+    var say = function (a, b) {
+        console.log('ssss', a, b)
+    }
+
+    var ww;
+    say.myCall(ww, 1231232, 33)
+</script>
+
+</html>
