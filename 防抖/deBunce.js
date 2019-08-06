@@ -1,3 +1,9 @@
+/**
+ * 简易的防抖函数
+ *
+ * @param {function} fn 需要防抖控制的函数
+ * @returns {function}
+ */
 function debounce(fn) {
     let timeout = null; // 创建一个标记用来存放定时器的返回值
     return function () {
@@ -15,6 +21,44 @@ function sayHi(e) {
 var inp = document.getElementById('inp');
 inp.addEventListener('input', debounce(sayHi)); // 防抖，每0.5秒执行一次 sayHi
 
+
+/**
+ * 第二个版本，好理解一点
+ *
+ * @param {function} func 需要防抖控制的函数
+ * @param {number} [time=17] 时间间隔，默认 17ms
+ * @param {Object} [options={
+ *     leading: true,  // 是否在进入时立即执行一次
+ *     context: null
+ * }]
+ * @returns
+ */
+const debounce = (func, time = 17, options = {
+    leading: true,  // 是否在进入时立即执行一次
+    context: null
+}) => {
+    let timer;
+    const _debounce = function (...args) {
+        if (timer) {    // 如果设置了定时器
+            clearTimeout(timer); // 先清除
+        }
+        if (options.leading && !timer) {    // 如果要求立即执行，并且之前没有定时器
+            timer = setTimeout(null, time);
+            func.apply(options.context, args);
+        } else {        // 正常执行，设置定时器
+            timer = setTimeout(() => {
+                func.apply(options.context, args);
+                timer = null;
+            }, time);
+        }
+    }
+    // 向外部暴露一个 cancel 函数，使得外部能够清除内部的定时器
+    _debounce.cancel = function() {
+        clearTimeout(timer);
+        timer= null;
+    }
+    return _debounce;
+}
 
 
 /**
@@ -59,3 +103,4 @@ var debounce = function (func, wait, immediate) {
         return result;
     }
 }
+
