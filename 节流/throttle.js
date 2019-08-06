@@ -1,3 +1,10 @@
+
+/**
+ * 简易实现的节流函数
+ *
+ * @param {Function} fn
+ * @returns
+ */
 function throttle(fn) {
     let canRun = true; // 通过闭包保存一个标记
     return function () {
@@ -14,6 +21,52 @@ function sayHi(e) {
     console.log(e.target.innerWidth, e.target.innerHeight);
 }
 window.addEventListener('resize', throttle(sayHi));
+
+
+/**
+ * 第二个版本，好理解一点
+ *
+ * @param {function} func
+ * @param {number} [time=17]
+ * @param {Object} [options={
+ *     leading: true,      // 是否在进入时立即执行一次
+ *     trailing: false,    // 是否在最后额外触发一次
+ *     context: null
+ * }]
+ * @returns {function}
+ */
+const throttle = (func, time = 17, options = {
+    leading: true,      // 是否在进入时立即执行一次
+    trailing: false,    // 是否在最后额外触发一次
+    context: null
+}) => {
+    let previous = new Date().getTime();    // 之前的时间戳
+    let timer;      // 标记定时器，用来清除
+    const _throttle = function (...args) {
+        let now = new Date().getTime();     // 获取当前时间
+        if (!options.leading) {     // 如果没有要求立即执行
+            if (timer) return;      // 如果定时器还在，就不执行，返回
+            timer = setTimeout(() => {  // 没有定时器就执行
+                time = null;
+                func.apply(options.context, args);
+            }, time);
+        } else if (now - previous > time) {     // 正常的节流，两次触发时间间隔大于设定时间
+            func.apply(options.context, args);  // 执行即可
+            previous = now;
+        } else if (options.trailing) {  // 如果要求结束额外执行一次
+            clearTimeout(timer);        // 先清除之前的定时器
+            timer = setTimeout(() => {  // 设置新的定时器，time 时间之后执行
+                func.apply(optinos.context, args);
+            }, time);
+        }
+    }
+    _throttle.cancel = () => {
+        previous = 0;
+        clearTimeout(timer);
+        timer = null;
+    }
+    return _throttle;
+}
 
 
 
@@ -71,3 +124,4 @@ var throttle = function (func, wait, options) {
         return result;
     }
 }
+
