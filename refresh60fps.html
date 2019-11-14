@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<!-- 如何渲染几万条数据同时不卡住页面 -->
+<!-- 一次之渲染一部分数据，通过 requestAnimationFrame 实现每 16ms 刷新一次 -->
+<body>
+    <ul>控件</ul>
+    <script>
+        setTimeout(() => {
+            // 插入数据总量
+            const total = 100000;
+            // 一次插入 20 条，如果有轻微卡顿可以降低
+            const once = 20;
+            // 渲染次数
+            const loopCount = total / once;
+            // 循环计数
+            let countOfRender = 0;
+            let ul = document.querySelector('ul')
+            function add() {
+                // 优化性能，插入不会造成回流
+                // DocumentFragments 是DOM节点。它们不是主DOM树的一部分。
+                // 通常的用例是创建文档片段，将元素附加到文档片段，然后将文档片段附加到DOM树。
+                // 在DOM树中，文档片段被其所有的子元素所代替。
+                // 因为文档片段存在于内存中，并不在DOM树中，所以将子元素插入到文档片段时不会引起页面回流（对元素位置和几何上的计算）。
+                // 因此，使用文档片段通常会带来更好的性能
+                const fragment = document.createDocumentFragment();
+                for (let i = 0; i < once; i++) {
+                    const li = document.createElement('li')
+                    li.innerHTML = Math.floor(Math.random() * total);
+                    fragment.appendChild(li)
+                }
+                ul.appendChild(fragment)
+                countOfRender += 1;
+                loop();
+            }
+            function loop() {
+                if (countOfRender < loopCount) {
+                    window.requestAnimationFrame(add)
+                }
+            }
+            loop()
+        }, 0);
+    </script>
+</body>
+
+</html>

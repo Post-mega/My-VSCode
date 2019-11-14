@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: row;
+        }
+
+        .center {
+            height: 150px;
+            background-color: #94E8FF;
+            flex-grow: 1;
+        }
+
+        .left {
+            width: 100px;
+            height: 150px;
+            background-color: #FFB5BF;
+            order: -1;
+        }
+
+        .right {
+            width: 200px;
+            height: 150px;
+            background-color: #8990D5;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="center">
+            <h1>三栏式圣杯布局，使用flex</h1>
+            <p>父容器设置 display: flex;</p>
+            <p>中间设置 flex-grow：1</p>
+            <p>左侧设置 order：-1</p>
+        </div>
+        <div class="left">left</div>
+        <div class="right">right</div>
+    </div>
+</body>
+
+</html>
