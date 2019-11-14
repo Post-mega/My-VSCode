@@ -1,4 +1,8 @@
-
+/**
+ * {@author}: Charley Young
+ * {@since}: 2019-11-14
+ * {@description}: collect function tips during development
+ */
 // 反转数组
 let reverse = arr => arr.reduce((acc, x) => [x].concat(acc))
 // console.log(reverse(['123as', 222, 'sd', 323]));
