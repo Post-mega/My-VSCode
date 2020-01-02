@@ -40,3 +40,5 @@ let unique = arr => Array.isArray(arr) ? Array.from(new Set(arr)) : null;
 // 返回参数类型
 let type = obj => Object.prototype.toString.call(obj).replace(/\[object\s|\]/g, '')
 // console.log(type(null))
+
+console.log(rgb2hex('rgb(85,85,170)'))
